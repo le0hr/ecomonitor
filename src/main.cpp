@@ -3,27 +3,30 @@
 #include <esp_wireguard.h>
 #include <PubSubClient.h>
 #include <time.h>
-
 #include "./gps/gps.h"
 #include "./gps/wifi.h"
 #include "./gps/config.h"
+#include "./gps/mqtt.h"
 
 // test wifi config
-const char* ssid = "tishon";
-const char* password = "0936444759";
+const char* ssid = MY_SSID;
+const char* password = PASSWORD;
 Gps* gps;
+Wifi* wifi;
+Mqtt* mqtt;
 // wireguard vpn init
 wireguard_config_t wg_config = ESP_WIREGUARD_CONFIG_DEFAULT();
 wireguard_ctx_t ctx = {0};
 esp_err_t err = ESP_FAIL;
 esp_err_t esp_wireguard_init(wireguard_config_t *config, wireguard_ctx_t *ctx);
 
+
 //mqtt and network init
 
 
 void setup() {
   Serial.begin(115200);
-  Wifi wifi(MY_SSID, PASSWORD);
+  wifi = new Wifi(MY_SSID, PASSWORD);
   gps = new Gps;
   
   // time sync
@@ -34,7 +37,7 @@ void setup() {
   wg_config.private_key ="WI3i8RI7NOM2NbI0eUHkGoFCgXloD1oXwLaCAiSZDW8=";
   wg_config.listen_port = 2008;
   wg_config.public_key = "EKJ1ewjni0n826dkHW+qh+tqjpDfGsdEooDR02rAylo=";
-  wg_config.endpoint = "91.244.52.63";
+  wg_config.endpoint = "109.227.74.248";
   wg_config.port = 2008;
   wg_config.address = "10.10.0.2";
   wg_config.preshared_key = NULL;
@@ -46,8 +49,12 @@ void setup() {
 
   // connecting to host
   err = esp_wireguard_connect(&ctx);
+  Serial.print("WireGuard connect result: ");
+  Serial.println(err);
+  
 
-  Serial.print(err);
+  //setup mqtt connection
+  mqtt = new Mqtt(wifi, BROKERS_IP, BROKERS_PORT);
 
 }
 

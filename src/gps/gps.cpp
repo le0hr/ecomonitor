@@ -4,8 +4,8 @@
 
 Gps::Gps(){
     // init gps variables
-    RXPin = 13;
-    TXPin = 15;
+    RXPin = 15;
+    TXPin = 13;
     GPSBaud = 9600;
     busConnection = new SoftwareSerial(RXPin, TXPin);
 }
@@ -21,9 +21,9 @@ void Gps::getPosition(double* lng,double* lat){
         while(busConnection->available()){
             char c = busConnection->read();
             GPS.encode(c);
-            Serial.print(c);
+            // Serial.print(c);
         }
-    } while(millis() - start < 60000);
+    } while(millis() - start < 1000);
     busConnection->end();
     
     // only return coordinates if we have a valid fix
