@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  db:
+    build: /database
+    container_name: database
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  backend:
+    build: /backend
+    container_name: backend
+    restart: always
+    depends_on:
+      - db
+      - broker
+    ports: 
+      - "2000:2000"
+  
+  broker:
+    build: /broker
+    container_name: broker
+    restart: always
+    ports: 
+      - "2008:1883"
+
+volumes:
+  postgres_data:

@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from fastapi_mqtt import FastMQTT, MQTTConfig
 from config import settings
-import psycopg
+import psycopg2
+from psycopg2.extras import RealDictCursor
 import json
 import logging 
 import datetime
+import json
 
 app = FastAPI()
 
@@ -42,13 +44,34 @@ async def message_handler(client, topic, payload, qos, properties):
     data['time'] = datetime.datetime.fromtimestamp(float(data['time']))
     logger.info(data['time'])
 
-    with psycopg.connect(conn_info) as conn:
+    with psycopg2.connect(conn_info) as conn:
         with conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO data (time, lat, lng) VALUES (%s, %s, %s) RETURNING id, time",
-                (data['time'], data['lat'], data['lng'])
+                "INSERT INTO sensor_readings (time, lpg, ch4, co, alcohol, benzene, hexane, lat, lng) " \
+                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id, time",
+                (data['time'], data['lpg'], data['ch4'], data['co'],
+                  data['alcohol'], data['benzene'], data['hexane'], data['lat'],data['lng'])
             )
             user = cur.fetchone()
             logger.info(user)
 
 
+@app.get("/")
+async def get_data_from_db():
+    with psycopg2.connect(conn_info) as conn:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute(
+                "SELECT * FROM sensor_readings LIMIT 100;",
+            )
+            data = cur.fetchall()
+            for row in data:
+                for key, value in row.items():
+                    if isinstance(value, (datetime.datetime, datetime.date)):
+                        row[key] = value.isoformat()
+            
+            return data
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=2000)

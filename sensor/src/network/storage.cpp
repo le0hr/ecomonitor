@@ -91,9 +91,9 @@ int Data::readData(char* payload){
 
     JsonDocument doc;
     doc["time"] = _measurements.time;
-    doc["LPG"]    = _measurements.LPG;
-    doc["CH4"]    = _measurements.CH4;
-    doc["CO"]    = _measurements.CO;
+    doc["lpg"]    = _measurements.LPG;
+    doc["ch4"]    = _measurements.CH4;
+    doc["co"]    = _measurements.CO;
     doc["alcohol"]    = _measurements.alcohol;
     doc["benzene"]    = _measurements.benzene;
     doc["hexane"]    = _measurements.hexane;
