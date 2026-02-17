@@ -21,26 +21,26 @@ Data::Data(){
     
     _measurements.lat = 0;
     _measurements.lng = 0;
-    _measurements.LPG = 0;
-    _measurements.CH4 = 0;
     _measurements.CO = 0;
     _measurements.alcohol = 0;
-    _measurements.benzene = 0;
-    _measurements.hexane = 0;
+    _measurements.CO2 = 0;
+    _measurements.toluene = 0;
+    _measurements.NH3 = 0;
+    _measurements.acetone = 0;
     _measurements.time = 0;
 }
 
 // struct setter 
-void Data::setData(double* lat, double* lng, float* LPG, float* CH4, float* CO, float* alcohol, float* benzene, float* hexane, time_t* time ){
+void Data::setData(double* lat, double* lng, float* CO2, float* toluene, float* CO, float* alcohol, float* NH3, float* acetone, time_t* time ){
     // Update data
     _measurements.lat = *lat;
     _measurements.lng = *lng;
-    _measurements.LPG = *LPG;
-    _measurements.CH4 = *CH4;
     _measurements.CO = *CO;
     _measurements.alcohol = *alcohol;
-    _measurements.benzene = *benzene;
-    _measurements.hexane = *hexane;
+    _measurements.CO2 = *CO2;
+    _measurements.toluene = *toluene;
+    _measurements.NH3 = *NH3;
+    _measurements.acetone = *acetone;
     _measurements.time = *time;
     Serial.println("Storage: Data have been set ");
 
@@ -90,15 +90,15 @@ int Data::readData(char* payload){
     }
 
     JsonDocument doc;
-    doc["time"] = _measurements.time;
-    doc["lpg"]    = _measurements.LPG;
-    doc["ch4"]    = _measurements.CH4;
-    doc["co"]    = _measurements.CO;
-    doc["alcohol"]    = _measurements.alcohol;
-    doc["benzene"]    = _measurements.benzene;
-    doc["hexane"]    = _measurements.hexane;
     doc["lat"] = _measurements.lat;
     doc["lng"] = _measurements.lng;
+    doc["time"] = _measurements.time;
+    doc["co"]    = _measurements.CO;
+    doc["alcohol"]    = _measurements.alcohol;
+    doc["co2"]    = _measurements.CO2;
+    doc["toluene"]    = _measurements.toluene;
+    doc["nh3"]    = _measurements.NH3;
+    doc["acetone"]    = _measurements.acetone;
 
     char buffer[256];
 

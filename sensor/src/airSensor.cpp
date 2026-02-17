@@ -23,26 +23,26 @@ AirSensor::AirSensor(){
     MQ3->serialDebug(true);
 }
 
-void AirSensor::readData(float* LPG, float* CH4, float* CO, float* alcohol, float* benzene, float* hexane){
+void AirSensor::readData(float* co, float* alcohol , float* co2, float* toluene, float* nh4, float* acetone){
     MQ3->update();
     
-    MQ3->setA(44771); MQ3->setB(-3.245);   // LPG detection
-    *hexane = MQ3->readSensor(false, 0);
+    MQ3->setA(605.18); MQ3->setB(-3.937);   // CO detection
+    *co = MQ3->readSensor(false, 0);
     
-    MQ3->setA(2*pow(10,31)); MQ3->setB(19.01);   // CH4 detection
-    *CH4 = MQ3->readSensor(false, 0);
-    
-    MQ3->setA(521853); MQ3->setB(-3.821);   // CO detection
-    *CO = MQ3->readSensor(false, 0);
-    
-    MQ3->setA(0.3934); MQ3->setB(-1.504);   // Alcohol detection
+    MQ3->setA(77.255); MQ3->setB(-3.18);   // Alcohol detection
     *alcohol = MQ3->readSensor(false, 0);
     
-    MQ3->setA(4.8387); MQ3->setB(-2.68);   // Benzene detection
-    *benzene = MQ3->readSensor(false, 0);
+    MQ3->setA(110.47); MQ3->setB(-2.862);   // CO2 detection
+    *CO2 = MQ3->readSensor(false, 0);
     
-    MQ3->setA(7585.3); MQ3->setB(-2.849);   // Hexane detection
-    *hexane = MQ3->readSensor(false, 0);
+    MQ3->setA(44.947); MQ3->setB(-3.445);   // Toluene detection
+    *toluene = MQ3->readSensor(false, 0);
+    
+    MQ3->setA(102.2); MQ3->setB(-2.473);   // NH4 detection
+    *nh4 = MQ3->readSensor(false, 0);
+    
+    MQ3->setA(34.668); MQ3->setB(-3.369);   // Acetone detection
+    *acetone = MQ3->readSensor(false, 0);
     Serial.println("AirSensor: data was read")
 
 
