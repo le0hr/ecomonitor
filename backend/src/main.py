@@ -70,6 +70,7 @@ async def message_handler(client, topic, payload, qos, properties):
 
 @app.get("/")
 async def get_data_from_db():
+    logging.info("received")
     with psycopg2.connect(conn_info) as conn:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute(

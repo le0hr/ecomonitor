@@ -63,7 +63,7 @@ function changeType(type){
 
 async function fetchData() {
     try {
-        const response = await fetch('http://26.239.186.53:2000');
+        const response = await fetch('/api/data');
         const data = await response.json();
         // console.log(data);
         return data;
@@ -75,34 +75,7 @@ async function fetchData() {
 
 var colors = ["#00FF00", "#FFD700", "#FFA500", "#FF6347", "#DC143C", "#8B0000"];
 
-// var circleList = fetchData();
-var data = [
-    {
-        "id": 2,
-        "time": "2024-02-17T18:24:00",
-        "co": 27,
-        "alcohol": 1,
-        "co2": 13,
-        "toluene": 12,
-        "nh3": 6,
-        "acetone": 0,
-        "max": 27,
-        "lat": 49.436919,
-        "lng": 32.058511
-    },
-    {
-        "id": 3,
-        "time": "2024-02-17T18:24:00",
-        "co": 24,
-        "alcohol": 100,
-        "co2": 17,
-        "toluene": 8,
-        "nh3": 2,
-        "acetone": 4,
-        "max": 24,
-        "lat": 49.440919,
-        "lng": 32.062511
-    }];
+var data = fetchData();
 // let data = await fetchData();
 var circleList = {};
 

@@ -2,13 +2,24 @@ version: '3.8'
 
 services:
   db:
-    build: /database
+    build: ./database
     container_name: database
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+    depends_on:
+      - backend
+
   backend:
-    build: /backend
+    build: ./backend
     container_name: backend
     restart: always
     depends_on:
@@ -18,7 +29,7 @@ services:
       - "2000:2000"
   
   broker:
-    build: /broker
+    build: ./broker
     container_name: broker
     restart: always
     ports: 
