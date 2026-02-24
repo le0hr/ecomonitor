@@ -25,15 +25,11 @@ services:
     depends_on:
       - db
       - broker
-    ports: 
-      - "2000:2000"
-  
+
   broker:
     build: ./broker
     container_name: broker
     restart: always
-    ports: 
-      - "2008:1883"
 
 volumes:
   postgres_data:

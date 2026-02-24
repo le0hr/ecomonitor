@@ -68,7 +68,7 @@ async def message_handler(client, topic, payload, qos, properties):
             logger.info(user)
 
 
-@app.get("/")
+@app.get("/data")
 async def get_data_from_db():
     logging.info("received")
     with psycopg2.connect(conn_info) as conn:

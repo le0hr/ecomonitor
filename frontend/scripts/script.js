@@ -37,7 +37,7 @@ document.addEventListener('click', (event) => {
 })
 
 function average(list){
-    return list.reduce((a, b) => a + b) / list.length;
+    return Math.floor(list.reduce((a, b) => a + b) / list.length);
 }
 function min(list){
     return list.reduce((a, b) => Math.min(a, b));
@@ -65,7 +65,7 @@ async function fetchData() {
     try {
         const response = await fetch('/api/data');
         const data = await response.json();
-        // console.log(data);
+        console.log(data);
         return data;
     }
     catch (error) {
@@ -75,8 +75,7 @@ async function fetchData() {
 
 var colors = ["#00FF00", "#FFD700", "#FFA500", "#FF6347", "#DC143C", "#8B0000"];
 
-var data = fetchData();
-// let data = await fetchData();
+let data = await fetchData();
 var circleList = {};
 
 var map = L.map('map').setView([49.436919, 32.058511], 12);
