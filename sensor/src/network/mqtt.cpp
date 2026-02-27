@@ -1,5 +1,5 @@
-#include "./gps/mqtt.h"
-#include "./gps/wifi.h"
+#include "./network/mqtt.h"
+#include "./network/wifi.h"
 // #include "./gps/callback.h"
 
 

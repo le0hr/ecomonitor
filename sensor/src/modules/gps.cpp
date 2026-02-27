@@ -1,5 +1,4 @@
-#include "./gps/gps.h"
-#include "./gps/mqtt.h"
+#include "./modules/gps.h"
 #include <iostream>
 
 Gps::Gps(){

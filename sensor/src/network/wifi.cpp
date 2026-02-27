@@ -1,4 +1,4 @@
-#include "./gps/wifi.h"
+#include "./network/wifi.h"
 
 
 void Wifi::setupConnection(const char* ssid, const char* password){

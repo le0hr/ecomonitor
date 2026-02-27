@@ -1,12 +1,12 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <time.h>
-#include "./gps/gps.h"
-#include "./gps/wifi.h"
-#include "./gps/config.h"
-#include "./gps/mqtt.h"
-#include "./storage.h"
-#include "./airSensor.h"
+#include "./modules/gps.h"
+#include "./modules/airSensor.h"
+#include "./network/wifi.h"
+#include "./network/mqtt.h"
+#include "./storage/storage.h"
+#include "./config.h"
 
 // Init global variables 
 double lng, lat, prvLat, prvLng;
@@ -45,7 +45,9 @@ void loop() {
   logTime = time(nullptr);  
   airSensor->readData(&co, &alcohol , &co2, &toluene, &nh3, &acetone);
   // ------------------------------
-
+  Serial.print(alcohol);
+  lat = 40;
+  lng = 49;
   // Sensor data managing 
   if (gps->GPS.distanceBetween(lat, lng, prvLat, prvLng)>=MIN_DIST){
     
@@ -53,14 +55,14 @@ void loop() {
     // otherwise add data to the file
     storage->setData(&lat, &lng, &co, &alcohol , &co2, &toluene, &nh3, &acetone, &logTime);
     storage->writeData();
-  
+    
     if (WiFi.status()==WL_CONNECTED){
       storage->startRead();
 
       if (!mqtt->mqttClient.connected()) mqtt->reconnect();
     
       storage->readData(message);
-    
+      Serial.println("test message");
       do{
         mqtt->sendMessage(DEVICE_NAME, message);  
       }while (wifi->wifiClient.status()==WL_CONNECTED
