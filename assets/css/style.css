@@ -261,6 +261,34 @@ footer {
 }
 
 @media (max-height: 720px) {
+    /* main {
+        height: auto;
+    } */
+    .statistics h3, .type h3, .levels h3 {
+        font-size: 16px;
+    }
+    .statistics h1 {
+        font-size: 28px;
+    }
+    .statistics p, .type p, .levels li {
+        font-size: 14px;
+    }
+}
+@media (max-height: 690px) {
+    .air-info {
+        gap: 10px;
+    }
+    .air-info > div {
+        padding: 15px;
+    }
+    .levels {
+        gap: 15px;
+    }
+    .statistics {
+        gap: 5px;
+    }
+}
+@media (max-height: 630px){
     main {
         height: auto;
     }
