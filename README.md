@@ -49,7 +49,8 @@ We need your help to cover the whole city! You don't need to be a programmer to 
 
 ## 📢 Project status
 
-* Actively under development.  
+* Actively under development. 
+* * Demo version available on https://ecomonitor.pp.ua
 * Want to join the development team?  
 * Or would you like to request a sensor?  
 * Contact us for any reason via email: **lev.hrabovij@gmail.com**

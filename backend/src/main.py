@@ -13,10 +13,10 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],             # Дозволяє всім доменам
-    allow_credentials=True,          # Дозволяє передачу cookies/auth
-    allow_methods=["*"],             # Дозволяє всі HTTP методи
-    allow_headers=["*"],             # Дозволяє всі заголовки
+    allow_origins=["*"],             
+    allow_credentials=True,          
+    allow_methods=["*"],             
+    allow_headers=["*"],             
 )
 
 mqtt_config = MQTTConfig(
