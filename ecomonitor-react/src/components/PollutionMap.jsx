@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -33,34 +34,32 @@ const createPoint = (color) => {
 };
 
 export function PollutionMap({ pollutionType, data = [] }) {
-  // Координати центру карти (наприклад, Київ)
-  data = [
-  {
-    id: 1,
-    location: "Центр міста",
-    lat: 49.4444, // Широта (Latitude)
-    lng: 32.0597, // Довгота (Longitude)
-    value: 45,    // Значення забруднення (те, що йде в getColor)
-  },
-  {
-    id: 2,
-    location: "26 школа",
-    lat: 49.42681078002194,
-    lng: 32.01669953437859,
-    value: 460,
-  },]
-  const center = [49.4444, 32.0597];
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('/api/data');
+        setItems(response.data);
+      } catch (error) {
+        console.error("Failed to fetch", error);
+      }
+    };
+    fetchData();
+  }, data);
+  // color of the marker depends on max AQI of the point.
+  // TODO:
+  // fix gas selection menu
+  
   const maxValue = data.length > 0 ? Math.max(...data.map(d => d.value)) : 1;
-
   return (
     <div className="size-full relative overflow-hidden">
       <MapContainer 
         center={center} 
         zoom={13} 
         className="size-full z-0"
-        zoomControl={false} // Можна вимкнути, щоб не заважало вашим карткам
+        zoomControl={false} 
       >
-        {/* Стильна світла карта (CartoDB Positron) */}
+        {/* map style (CartoDB Positron) */}
         <TileLayer
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
@@ -72,10 +71,9 @@ export function PollutionMap({ pollutionType, data = [] }) {
           return (
             <Marker
               key={point.id}
-              position={[point.lat, point.lng]} // Тепер використовуємо реальні координати
-              icon={createPoint(color)}
+              position={[point.lat, point.lng]}               icon={createPoint(color)}
             >
-              {/* Ваш Tooltip тепер вбудований у Leaflet */}
+              {/*Tooltip window */}
               <Tooltip direction="top" offset={[0, -10]} opacity={1} className="custom-leaflet-tooltip">
                 <div className="p-1">
                   <div className="font-semibold text-gray-900">{point.location}</div>
