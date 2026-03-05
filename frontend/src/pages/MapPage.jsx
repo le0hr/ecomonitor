@@ -10,97 +10,6 @@ import { Button } from '../components/ui/button';
 
 // Mock pollution data for different types with percentage positions
 // Each location has measurements for all 5 pollutants
-const pollutionLocations = [
-  { 
-    id: 1, 
-    x: 45, 
-    y: 25, 
-    location: 'Times Square',
-    co: 850,
-    no: 62,
-    alcohol: 15,
-    pm25: 45,
-    o3: 78
-  },
-  { 
-    id: 2, 
-    x: 50, 
-    y: 35, 
-    location: 'Central Park South',
-    co: 620,
-    no: 45,
-    alcohol: 8,
-    pm25: 38,
-    o3: 65
-  },
-  { 
-    id: 3, 
-    x: 55, 
-    y: 28, 
-    location: 'Midtown East',
-    co: 920,
-    no: 71,
-    alcohol: 22,
-    pm25: 52,
-    o3: 85
-  },
-  { 
-    id: 4, 
-    x: 40, 
-    y: 75, 
-    location: 'Financial District',
-    co: 780,
-    no: 58,
-    alcohol: 12,
-    pm25: 41,
-    o3: 72
-  },
-  { 
-    id: 5, 
-    x: 75, 
-    y: 40, 
-    location: 'Queens Center',
-    co: 540,
-    no: 42,
-    alcohol: 6,
-    pm25: 35,
-    o3: 58
-  },
-  { 
-    id: 6, 
-    x: 35, 
-    y: 65, 
-    location: 'Brooklyn',
-    co: 710,
-    no: 55,
-    alcohol: 10,
-    pm25: 48,
-    o3: 68
-  },
-  { 
-    id: 7, 
-    x: 48, 
-    y: 20, 
-    location: 'Upper West Side',
-    co: 650,
-    no: 49,
-    alcohol: 9,
-    pm25: 43,
-    o3: 61
-  },
-  { 
-    id: 8, 
-    x: 42, 
-    y: 70, 
-    location: 'Tribeca',
-    co: 690,
-    no: 52,
-    alcohol: 11,
-    pm25: 39,
-    o3: 64
-  },
-];
-
 const pollutionTypes = [
   { value: 'pm25', label: 'PPM2.5', icon: Droplets, unit: 'ppm' },
   { value: 'no', label: 'NO', icon: Factory, unit: 'ppm' },
@@ -108,25 +17,6 @@ const pollutionTypes = [
   { value: 'alcohol', label: 'Alcohol', icon: Droplets, unit: 'ppm' },
   { value: 'o3', label: 'O₃', icon: Wind, unit: 'ppm' },
 ];
-
-// Function to get color based on value and type
-const getColorForValue = (value, type) => {
-  let threshold;
-  if (type === 'co') {
-    threshold = [900, 800, 700, 600, 0];
-  } else if (type === 'alcohol') {
-    threshold = [20, 15, 10, 5, 0];
-  } else if (type === 'o3') {
-    threshold = [80, 70, 60, 50, 0];
-  } else {
-    threshold = [60, 50, 45, 40, 0]; // pm25, no
-  }
-  if (value >= threshold[0]) return '#8B0000';
-  if (value >= threshold[1]) return '#DC143C';
-  if (value >= threshold[2]) return '#FF6347';
-  if (value >= threshold[3]) return '#FFA500';
-  return '#FFD700';
-};
 
 export function MapPage() {
   const [selectedType, setSelectedType] = useState('no');
@@ -136,10 +26,9 @@ export function MapPage() {
   const currentType = pollutionTypes.find(t => t.value === selectedType);
   const Icon = currentType.icon;
   
-  const values = pollutionLocations.map(loc => loc[selectedType]);
-  const average = values.reduce((sum, v) => sum + v, 0) / values.length;
-  const max = Math.max(...values);
-  const min = Math.min(...values);
+  const average = 0;
+  const max = 0;
+  const min = 0;
 
 
 
@@ -254,7 +143,7 @@ export function MapPage() {
             <div className="flex items-center gap-6">
               <div>
                 <span className="text-gray-600">Monitoring Stations: </span>
-                <span className="font-medium">{pollutionLocations.length}</span>
+                <span className="font-medium">{0}</span>
               </div>
               <div>
                 <span className="text-gray-600">Coverage Area: </span>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
@@ -33,23 +33,24 @@ const createPoint = (color) => {
   });
 };
 
-export function PollutionMap({ pollutionType, data = [] }) {
-  
+export function PollutionMap({ pollutionType}) {
+  const [data, setItems] = useState([]);
+  const center = [49.444, 32.06];
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/api/data');
         setItems(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Failed to fetch", error);
       }
     };
     fetchData();
-  }, data);
+  }, []);
   // color of the marker depends on max AQI of the point.
   // TODO:
   // fix gas selection menu
-  
   const maxValue = data.length > 0 ? Math.max(...data.map(d => d.value)) : 1;
   return (
     <div className="size-full relative overflow-hidden">
