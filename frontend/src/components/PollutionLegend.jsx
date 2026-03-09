@@ -3,10 +3,10 @@ import { Card } from './ui/card';
 
 const legendItems = [
   { label: 'Very High', color: '#8B0000' },
-  { label: 'High', color: '#DC143C' },
-  { label: 'Moderate-High', color: '#FF6347' },
-  { label: 'Moderate', color: '#FFA500' },
-  { label: 'Low', color: '#FFD700' },
+  { label: 'High', color: '#f04f23' },
+  { label: 'Moderate-High', color: '#faa022' },
+  { label: 'Moderate', color: '#e4d125' },
+  { label: 'Low', color: '#41d61f' },
 ];
 
 export function PollutionLegend({ pollutionType }) {

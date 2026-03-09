@@ -1,19 +1,17 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 
 // Function to get color based on pollution level
-function getColor(value, max){
-  const ratio = value / max;
+function getColor(value){
   
-  if (ratio > 0.8) return '#8B0000'; // Dark red - Very high
-  if (ratio > 0.6) return '#DC143C'; // Crimson - High
-  if (ratio > 0.4) return '#FF6347'; // Tomato - Moderate-high
-  if (ratio > 0.2) return '#FFA500'; // Orange - Moderate
-  return '#FFD700'; // Gold - Low
+  if (value <100) return '#41d61f'; // Green - Low
+  if (value <200) return '#e4d125'; // Yellow - Moderate
+  if (value<300) return '#faa022'; // Desert - Moderate-hight
+  if (value< 400) return '#f04f23';// Orange - Hight
+  return '#8B0000'; // Dark red - Very high
 }
 
 
@@ -33,25 +31,14 @@ const createPoint = (color) => {
   });
 };
 
-export function PollutionMap({ pollutionType}) {
-  const [data, setItems] = useState([]);
+export function PollutionMap({ points = []}) {
   const center = [49.444, 32.06];
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/api/data');
-        setItems(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error("Failed to fetch", error);
-      }
-    };
-    fetchData();
-  }, []);
+  console.log(points);
+  
   // color of the marker depends on max AQI of the point.
   // TODO:
   // fix gas selection menu
-  const maxValue = data.length > 0 ? Math.max(...data.map(d => d.value)) : 1;
+  const maxValue = points.length > 0 ? Math.max(...points.map(d => d.value)) : 1;
   return (
     <div className="size-full relative overflow-hidden">
       <MapContainer 
@@ -66,8 +53,8 @@ export function PollutionMap({ pollutionType}) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
         />
 
-        {data.map((point) => {
-          const color = getColor(point.value, maxValue);
+        {points.map((point) => {
+          const color = getColor(point.value);
           
           return (
             <Marker
@@ -79,7 +66,7 @@ export function PollutionMap({ pollutionType}) {
                 <div className="p-1">
                   <div className="font-semibold text-gray-900">{point.location}</div>
                   <div className="text-sm text-gray-600">
-                    {pollutionType}: <span className="font-medium text-black">{point.value}</span>
+                    {"заглушка"}: <span className="font-medium text-black">{point.value}</span>
                   </div>
                 </div>
               </Tooltip>

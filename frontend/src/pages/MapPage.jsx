@@ -2,27 +2,28 @@ import { useState, useEffect } from 'react';
 import { PollutionLegend } from '../components/PollutionLegend';
 import { PollutionStats } from '../components/PollutionStats';
 import { PollutionMap } from '../components/PollutionMap';
+import axios from 'axios';
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Card } from '../components/ui/card';
-import { Wind, Droplets, Factory, ChevronUp, ChevronDown } from 'lucide-react';
+import { Wind, Droplets, Factory, ChevronUp, ChevronDown, Car } from 'lucide-react';
 import { Button } from '../components/ui/button';
 
 // Mock pollution data for different types with percentage positions
 // Each location has measurements for all 5 pollutants
 const pollutionTypes = [
-  { value: 'pm25', label: 'PPM2.5', icon: Droplets, unit: 'ppm' },
-  { value: 'no', label: 'NO', icon: Factory, unit: 'ppm' },
-  { value: 'co', label: 'CO', icon: Wind, unit: 'ppm' },
-  { value: 'alcohol', label: 'Alcohol', icon: Droplets, unit: 'ppm' },
-  { value: 'o3', label: 'O₃', icon: Wind, unit: 'ppm' },
+  { value: 'co', label: 'CO', icon: Car, unit: 'AQI' },
+  { value: 'alcohol', label: 'Alcohol', icon: Droplets, unit: 'AQI' },
+  { value: 'co2', label: 'CO2', icon: Factory, unit: 'AQI' },
+  { value: 'toluene', label: 'Toluene', icon: Droplets, unit: 'AQI' },
+  { value: 'nh3', label: 'NH3', icon: Wind, unit: 'AQI' },
 ];
 
 export function MapPage() {
-  const [selectedType, setSelectedType] = useState('no');
+  const [selectedType, setSelectedType] = useState('co2');
   const [hoveredLocation, setHoveredLocation] = useState(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
-  
+  const [pointOnMap, setPoints] = useState([]);
   const currentType = pollutionTypes.find(t => t.value === selectedType);
   const Icon = currentType.icon;
   
@@ -30,16 +31,28 @@ export function MapPage() {
   const max = 0;
   const min = 0;
 
-
+  useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get('/api/data');
+          console.log(response.data);
+          setPoints(response.data);
+          console.log(response.data);
+        } catch (error) {
+          console.error("Failed to fetch", error);
+        }
+      };
+      fetchData();
+    }, []);
 
   return (
     <div className="h-full  flex-1 flex flex-col bg-gray-100">
       {/* Controls Bar */}
-      <div className="bg-white border-b px-4 md:px-6 py-3">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="bg-white border-b px-4 md:px-6 py-3 relative z-[9999]">
+        <div className="max-w-7xl mx-auto flex items-center justify-between ">
           <div className="flex items-center gap-2">
             <span className="text-xs md:text-sm text-gray-600">Type:</span>
-            <Select value={selectedType} onValueChange={(value) => setSelectedType(value)}>
+            <Select className="bg-white" value={selectedType} onValueChange={(value) => setSelectedType(value)}>
               <SelectTrigger className="w-32 md:w-40">
                 <SelectValue />
               </SelectTrigger>
@@ -75,7 +88,7 @@ export function MapPage() {
         {/* Map area with gradient background */}
         <div className="size-full bg-gradient-to-br from-slate-100 to-slate-200 relative">
           {/* Pollution markers */}
-          <PollutionMap></PollutionMap>
+          <PollutionMap points = {pointOnMap}></PollutionMap>
         </div>
         
         {/* Desktop Overlay Cards - Right Side */}
