@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <ESP8266WiFi.h>
 #include <time.h>
 #include "./modules/gps.h"
 #include "./modules/airSensor.h"
@@ -42,7 +41,6 @@ void loop() {
   
   // ------------------------------
   gps->getPosition(&lng, &lat);
-  logTime = time(nullptr);  
   airSensor->readData(&co, &alcohol , &co2, &toluene, &nh3, &acetone);
   // ------------------------------
   Serial.print(alcohol);
@@ -65,7 +63,7 @@ void loop() {
       Serial.println("test message");
       do{
         mqtt->sendMessage(DEVICE_NAME, message);  
-      }while (wifi->wifiClient.status()==WL_CONNECTED
+      }while (WiFi.status()==WL_CONNECTED
        && mqtt->mqttClient.connected()
        && storage->readData(message)>0);
     
@@ -78,6 +76,7 @@ void loop() {
       storage->writeData();
       wifi->setupConnection(WIFI_SSID, WIFI_PASSWORD);
     }
+    delay(10);
   }
 
 

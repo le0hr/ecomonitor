@@ -15,23 +15,36 @@ function getColor(value){
 }
 
 
-const createPoint = (color) => {
+const createPoint = (color, value) => {
   return L.divIcon({
     html: `<div style="
-      background-color: ${color};
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 2px solid white;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    "></div>`,
+        background-color: ${color};
+        width: 24px;      
+        height: 24px;
+        border-radius: 50%;
+        border: 2px solid white;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        color: white;         
+        font-family: sans-serif;
+        font-size: 10px;      
+        font-weight: bold;
+        text-shadow: 0px 1px 2px rgba(0,0,0,0.5); 
+        line-height: 1;
+      ">
+        ${value}
+      </div>`,
     className: 'custom-leaflet-marker', 
     iconSize: [16, 16],
     iconAnchor: [8, 8],
   });
 };
 
-export function PollutionMap({ points = []}) {
+export function PollutionMap({ points = [], selected = 'co2'}) {
   const center = [49.444, 32.06];
   console.log(points);
   
@@ -54,19 +67,30 @@ export function PollutionMap({ points = []}) {
         />
 
         {points.map((point) => {
-          const color = getColor(point.value);
+          const color = getColor(point[selected]);
           
           return (
             <Marker
               key={point.id}
-              position={[point.lat, point.lng]}               icon={createPoint(color)}
+              position={[point.lat, point.lng]}               icon={createPoint(color,point[selected] )}
             >
               {/*Tooltip window */}
               <Tooltip direction="top" offset={[0, -10]} opacity={1} className="custom-leaflet-tooltip">
-                <div className="p-1">
-                  <div className="font-semibold text-gray-900">{point.location}</div>
-                  <div className="text-sm text-gray-600">
-                    {"заглушка"}: <span className="font-medium text-black">{point.value}</span>
+                <div className="bg-white px-3 py-2 rounded-lg shadow-xl border border-gray-100 min-w-[120px]">
+                  {/* Заголовок локації */}
+                  <div className="text-[13px] font-bold text-gray-900 border-b border-gray-50 pb-1 mb-1 truncate">
+                    {point.location}
+                  </div>
+                  
+                  {/* Значення з індикатором */}
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-1.5">
+                      <span className="size-2 rounded-full bg-blue-500 animate-pulse" /> {/* Маленька крапка-індикатор */}
+                      <span className="text-xs text-gray-500 font-medium">Показник:</span>
+                    </div>
+                    <span className="text-sm font-bold text-slate-800">
+                      {point.value} <span className="text-[10px] text-gray-400 font-normal">мг/м³</span>
+                    </span>
                   </div>
                 </div>
               </Tooltip>

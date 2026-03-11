@@ -48,7 +48,7 @@ export function MapPage() {
   return (
     <div className="h-full  flex-1 flex flex-col bg-gray-100">
       {/* Controls Bar */}
-      <div className="bg-white border-b px-4 md:px-6 py-3 relative z-[9999]">
+      <div className="bg-white border-b px-4 md:px-6 py-3 positions:absolute z-[9999]">
         <div className="max-w-7xl mx-auto flex items-center justify-between ">
           <div className="flex items-center gap-2">
             <span className="text-xs md:text-sm text-gray-600">Type:</span>
@@ -56,7 +56,7 @@ export function MapPage() {
               <SelectTrigger className="w-32 md:w-40">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white z-[9999] shadow-md border border-gray-200">
                 {pollutionTypes.map((type) => (
                   <SelectItem key={type.value} value={type.value}>
                     {type.label}
@@ -88,7 +88,7 @@ export function MapPage() {
         {/* Map area with gradient background */}
         <div className="size-full bg-gradient-to-br from-slate-100 to-slate-200 relative">
           {/* Pollution markers */}
-          <PollutionMap points = {pointOnMap}></PollutionMap>
+          <PollutionMap points = {pointOnMap} selected={selectedType}></PollutionMap>
         </div>
         
         {/* Desktop Overlay Cards - Right Side */}
@@ -118,7 +118,7 @@ export function MapPage() {
         <PollutionLegend pollutionType={currentType.label} />
       </div>
 
-      {/* Mobile Info Panel - Теж компактніший */}
+      {/* Mobile Info Panel */}
       {isInfoOpen && (
         <div className="md:hidden absolute bottom-0 left-0 right-0 z-[1000] bg-white border-t shadow-2xl max-h-[50vh] overflow-y-auto">
           <div className="p-3 space-y-3 scale-90 origin-bottom"> 

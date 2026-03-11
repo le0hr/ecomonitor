@@ -15,9 +15,7 @@ Data::Data(){
     }
     
     // Debug: Check filesystem info
-    FSInfo fsInfo;
-    LittleFS.info(fsInfo);
-    Serial.printf("Storage: FS Total: %d, Used: %d\n", fsInfo.totalBytes, fsInfo.usedBytes);
+    Serial.printf("Storage: FS Total: %llu, Used: %llu\n", LittleFS.totalBytes(), LittleFS.usedBytes());
     
     _measurements.lat = 0;
     _measurements.lng = 0;
@@ -79,6 +77,8 @@ void Data::startRead(){
 
 // return a chunk of saved data as json string 
 int Data::readData(char* payload){
+    if (!_f || !_f.available()) return 0;
+    
     // if file exists or not empty, read from file
     if (!_f.size()){
         _f = LittleFS.open("/log.bin", "r");
@@ -117,10 +117,11 @@ void Data::endRead(){
         f_temp.write((const uint8_t*)&_measurements, sizeof(_measurements));
     }
     _f.close();
-    LittleFS.remove("./log.bin");
-
-    LittleFS.rename("./log1.bin", "./log.bin");
     f_temp.close();
+
+    LittleFS.remove("/log.bin");
+
+    LittleFS.rename("/log1.bin", "/log.bin");
 
     Serial.println("Storage: reading finished");
 

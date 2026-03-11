@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ESP8266WiFi.h>
+#include <WiFi.h>
 
 
 class Wifi{

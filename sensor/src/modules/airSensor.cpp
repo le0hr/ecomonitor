@@ -1,11 +1,16 @@
 #include "modules/airSensor.h"
 #define R0 39.657
 AirSensor::AirSensor(){
+    pinMode(SPI_CS, OUTPUT);
+    digitalWrite(SPI_CS, HIGH);
+    
     Serial.println("AirSensor: Setting up the sensor.");
-
     MQ3 = new MQUnifiedsensor(Board, Voltage_Resolution, ADC_Bit_Resolution, Pin, Type);
     MQ3->setRegressionMethod(1); //_PPM =  a*ratio^b
     MQ3->init(); 
+
+    adc = new MCP3208(ADC_VREF, SPI_CS);
+    spiSettings = new SPISettings(ADC_CLK, MSBFIRST, SPI_MODE0);
 
     Serial.print("AirSensor: Calibrating the sensor.");
     MQ3->setR0(R0);
@@ -21,9 +26,14 @@ void AirSensor::readData(float* co, float* alcohol , float* co2, float* toluene,
     *nh3=0;
     *acetone=0;
     
+    SPI.beginTransaction(*spiSettings);
+    uint16_t raw = adc->read(MCP3208::Channel::SINGLE_0);
+    SPI.endTransaction();
+
+    uint16_t mv = adc->toAnalog(raw);
     for (int i = 0; i<50;i++){
 
-        MQ3->update();
+        MQ3->externalADCUpdate(raw);
         
         MQ3->setA(605.18); MQ3->setB(-3.937);   // CO detection
         *co = max(MQ3->readSensor(false, 0), *co);
