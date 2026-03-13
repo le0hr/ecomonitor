@@ -3,8 +3,10 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { CircleDollarSign, Heart, Shield, TrendingUp, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export function DonatePage() {
+  const { t } = useTranslation();
   const [selectedAmount, setSelectedAmount] = useState(null);
   const [customAmount, setCustomAmount] = useState('');
 
@@ -14,25 +16,25 @@ export function DonatePage() {
     {
       icon: CircleDollarSign,
       amount: '$25',
-      description: 'Covers maintenance for one monitoring station for a month',
+      description: t('donatePage.impactItems.25'),
     },
     {
       icon: Shield,
       amount: '$100',
-      description: 'Provides sensor calibration and quality assurance testing',
+      description: t('donatePage.impactItems.100'),
     },
     {
       icon: TrendingUp,
       amount: '$250',
-      description: 'Funds data analysis and public reporting for one quarter',
+      description: t('donatePage.impactItems.250'),
     },
   ];
 
   const benefits = [
-    'Your donation is tax-deductible',
-    'Regular updates on how your contribution is used',
-    'Access to exclusive community events',
-    'Recognition in our annual donor report',
+    t('donatePage.benefits.taxDeductible'),
+    t('donatePage.benefits.updates'),
+    t('donatePage.benefits.events'),
+    t('donatePage.benefits.recognition'),
   ];
 
   const handleDonate = () => {
@@ -47,9 +49,9 @@ export function DonatePage() {
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
         {/* Hero Section */}
         <div className="mb-8 md:mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-3 md:mb-4">Support Our Mission</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-3 md:mb-4">{t('donatePage.title')}</h1>
           <p className="text-lg md:text-xl text-gray-600">
-            Your donation helps us monitor air quality and protect public health across New York City
+            {t('donatePage.subtitle')}
           </p>
         </div>
 
@@ -64,7 +66,7 @@ export function DonatePage() {
 
         {/* Impact Section */}
         <div className="mb-8 md:mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">Your Impact</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">{t('donatePage.impactTitle')}</h2>
           <div className="grid md:grid-cols-3 gap-4 md:gap-6">
             {impactItems.map((item) => (
               <Card key={item.amount} className="p-6">
@@ -85,11 +87,11 @@ export function DonatePage() {
         <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           {/* Donation Form */}
           <Card className="p-6 md:p-8">
-            <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Make a Donation</h2>
+            <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">{t('donatePage.makeDonation')}</h2>
             
             {/* Preset Amounts */}
             <div className="mb-6">
-              <label className="block text-sm font-medium mb-3">Select Amount</label>
+              <label className="block text-sm font-medium mb-3">{t('donatePage.selectAmount')}</label>
               <div className="grid grid-cols-3 gap-2 md:gap-3">
                 {donationAmounts.map((amount) => (
                   <Button
@@ -110,7 +112,7 @@ export function DonatePage() {
             {/* Custom Amount */}
             <div className="mb-6">
               <label htmlFor="custom-amount" className="block text-sm font-medium mb-2">
-                Or Enter Custom Amount
+                {t('donatePage.customAmount')}
               </label>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
@@ -150,7 +152,7 @@ export function DonatePage() {
               disabled={!selectedAmount && !customAmount}
             >
               <Heart className="size-5 mr-2" />
-              Donate Now
+              {t('donatePage.donate')}
             </Button>
 
             <p className="text-xs text-gray-500 text-center mt-4">
@@ -161,7 +163,7 @@ export function DonatePage() {
           {/* Benefits & Info */}
           <div className="space-y-4 md:space-y-6">
             <Card className="p-6 md:p-8">
-              <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Donor Benefits</h2>
+              <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">{t('donatePage.benefitsTitle')}</h2>
               <div className="space-y-3">
                 {benefits.map((benefit) => (
                   <div key={benefit} className="flex gap-3">
@@ -173,11 +175,11 @@ export function DonatePage() {
             </Card>
 
             <Card className="p-6 md:p-8">
-              <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">How We Use Your Donation</h2>
+              <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">{t('donatePage.howWeUse')}</h2>
               <div className="space-y-4">
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm font-medium">Equipment & Maintenance</span>
+                    <span className="text-sm font-medium">{t('donatePage.equipmentMaintenance')}</span>
                     <span className="text-sm font-medium">45%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
@@ -186,7 +188,7 @@ export function DonatePage() {
                 </div>
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm font-medium">Research & Analysis</span>
+                    <span className="text-sm font-medium">{t('donatePage.researchAnalysis')}</span>
                     <span className="text-sm font-medium">30%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
@@ -195,7 +197,7 @@ export function DonatePage() {
                 </div>
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm font-medium">Community Programs</span>
+                    <span className="text-sm font-medium">{t('donatePage.communityPrograms')}</span>
                     <span className="text-sm font-medium">15%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
@@ -204,7 +206,7 @@ export function DonatePage() {
                 </div>
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm font-medium">Operations</span>
+                    <span className="text-sm font-medium">{t('donatePage.operations')}</span>
                     <span className="text-sm font-medium">10%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">

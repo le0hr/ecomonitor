@@ -4,25 +4,27 @@ import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { CheckCircle2, Users, Heart, Zap } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export function JoinPage() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({name: '',email: '',phone: '',interest: '',});
 
   const benefits = [
     {
       icon: Users,
-      title: 'Community Impact',
-      description: 'Make a real difference in your community by helping monitor air quality',
+      title: t('joinPage.benefits.communityImpact.title'),
+      description: t('joinPage.benefits.communityImpact.description'),
     },
     {
       icon: Heart,
-      title: 'Health Advocacy',
-      description: 'Contribute to public health initiatives and environmental justice',
+      title: t('joinPage.benefits.healthAdvocacy.title'),
+      description: t('joinPage.benefits.healthAdvocacy.description'),
     },
     {
       icon: Zap,
-      title: 'Skill Development',
-      description: 'Learn about environmental science and data collection technologies',
+      title: t('joinPage.benefits.skillDevelopment.title'),
+      description: t('joinPage.benefits.skillDevelopment.description'),
     },
   ];
 
@@ -38,9 +40,9 @@ export function JoinPage() {
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
         {/* Hero Section */}
         <div className="mb-8 md:mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-3 md:mb-4">Join Our Mission</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-3 md:mb-4">{t('joinPage.title')}</h1>
           <p className="text-lg md:text-xl text-gray-600">
-            Become part of our community of volunteers making a difference in air quality monitoring
+            {t('joinPage.subtitle')}
           </p>
         </div>
 
@@ -55,7 +57,7 @@ export function JoinPage() {
 
         {/* Benefits Section */}
         <div className="mb-8 md:mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">Why Volunteer With Us?</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">{t('joinPage.whyVolunteer')}</h2>
           <div className="grid md:grid-cols-3 gap-4 md:gap-6">
             {benefits.map((benefit) => (
               <Card key={benefit.title} className="p-6">
@@ -73,34 +75,34 @@ export function JoinPage() {
 
         {/* Opportunities Section */}
         <Card className="p-6 md:p-8 mb-8 md:mb-12">
-          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Volunteer Opportunities</h2>
+          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">{t('joinPage.volunteerOpportunities')}</h2>
           <div className="space-y-4">
             <div className="flex gap-3">
               <CheckCircle2 className="size-6 text-green-600 flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-semibold mb-1">Monitor Maintenance</h3>
-                <p className="text-gray-600">Help maintain and calibrate air quality monitoring equipment</p>
+                <h3 className="font-semibold mb-1">{t('joinPage.opportunities.monitorMaintenance.title')}</h3>
+                <p className="text-gray-600">{t('joinPage.opportunities.monitorMaintenance.description')}</p>
               </div>
             </div>
             <div className="flex gap-3">
               <CheckCircle2 className="size-6 text-green-600 flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-semibold mb-1">Data Analysis</h3>
-                <p className="text-gray-600">Assist in analyzing air quality data and generating reports</p>
+                <h3 className="font-semibold mb-1">{t('joinPage.opportunities.dataAnalysis.title')}</h3>
+                <p className="text-gray-600">{t('joinPage.opportunities.dataAnalysis.description')}</p>
               </div>
             </div>
             <div className="flex gap-3">
               <CheckCircle2 className="size-6 text-green-600 flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-semibold mb-1">Community Outreach</h3>
-                <p className="text-gray-600">Help educate the community about air quality and its impacts</p>
+                <h3 className="font-semibold mb-1">{t('joinPage.opportunities.communityOutreach.title')}</h3>
+                <p className="text-gray-600">{t('joinPage.opportunities.communityOutreach.description')}</p>
               </div>
             </div>
             <div className="flex gap-3">
               <CheckCircle2 className="size-6 text-green-600 flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-semibold mb-1">Event Coordination</h3>
-                <p className="text-gray-600">Organize awareness events and community workshops</p>
+                <h3 className="font-semibold mb-1">{t('joinPage.opportunities.eventCoordination.title')}</h3>
+                <p className="text-gray-600">{t('joinPage.opportunities.eventCoordination.description')}</p>
               </div>
             </div>
           </div>
@@ -108,11 +110,11 @@ export function JoinPage() {
 
         {/* Sign Up Form */}
         <Card className="p-6 md:p-8">
-          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Get Involved Today</h2>
+          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">{t('joinPage.getInvolved')}</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="name" className="block text-sm font-medium mb-2">
-                Full Name *
+                {t('joinPage.form.name')} *
               </label>
               <Input
                 id="name"
@@ -124,7 +126,7 @@ export function JoinPage() {
             </div>
             <div>
               <label htmlFor="email" className="block text-sm font-medium mb-2">
-                Email Address *
+                {t('joinPage.form.email')} *
               </label>
               <Input
                 id="email"
@@ -137,7 +139,7 @@ export function JoinPage() {
             </div>
             <div>
               <label htmlFor="phone" className="block text-sm font-medium mb-2">
-                Phone Number
+                {t('joinPage.form.phone')}
               </label>
               <Input
                 id="phone"
@@ -149,7 +151,7 @@ export function JoinPage() {
             </div>
             <div>
               <label htmlFor="interest" className="block text-sm font-medium mb-2">
-                Areas of Interest
+                {t('joinPage.form.interest')}
               </label>
               <Textarea
                 id="interest"
@@ -160,7 +162,7 @@ export function JoinPage() {
               />
             </div>
             <Button type="submit" className="w-full">
-              Submit Application
+              {t('joinPage.form.submit')}
             </Button>
           </form>
         </Card>

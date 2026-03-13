@@ -1,12 +1,14 @@
 import { Card } from '../components/ui/card';
 import { Target, Users, Award, TrendingUp } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export function AboutPage() {
+  const { t } = useTranslation();
   const stats = [
-    { icon: Users, label: 'Active Monitors', value: '150+' },
-    { icon: Target, label: 'Data Points/Day', value: '50K+' },
-    { icon: Award, label: 'Years Operating', value: '8' },
-    { icon: TrendingUp, label: 'Accuracy Rate', value: '99.2%' },
+    { icon: Users, label: t('aboutPage.stats.activeMonitors'), value: '150+' },
+    { icon: Target, label: t('aboutPage.stats.dataPoints'), value: '50K+' },
+    { icon: Award, label: t('aboutPage.stats.yearsOperating'), value: '8' },
+    { icon: TrendingUp, label: t('aboutPage.stats.accuracyRate'), value: '99.2%' },
   ];
 
   return (
@@ -14,9 +16,9 @@ export function AboutPage() {
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
         {/* Hero Section */}
         <div className="mb-8 md:mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-3 md:mb-4">About Air Quality Monitor</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-3 md:mb-4">{t('aboutPage.heroTitle')}</h1>
           <p className="text-lg md:text-xl text-gray-600">
-            Dedicated to providing real-time, accurate air quality data to protect public health
+            {t('aboutPage.heroDescription')}
           </p>
         </div>
 
@@ -47,44 +49,34 @@ export function AboutPage() {
         {/* Mission Section */}
         <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12">
           <Card className="p-6 md:p-8">
-            <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Our Mission</h2>
+            <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">{t('aboutPage.missionTitle')}</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              We believe everyone deserves to breathe clean air. Our mission is to provide accessible,
-              real-time air quality data to communities across New York City, empowering residents to
-              make informed decisions about their health and environment.
+              {t('aboutPage.missionText1')}
             </p>
             <p className="text-gray-700 leading-relaxed">
-              Through our network of advanced monitoring stations, we track multiple pollutants including
-              particulate matter, nitrogen oxides, carbon monoxide, and ozone levels, providing comprehensive
-              insights into the air quality across all five boroughs.
+              {t('aboutPage.missionText2')}
             </p>
           </Card>
 
           <Card className="p-6 md:p-8">
-            <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Our Technology</h2>
+            <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">{t('aboutPage.technologyTitle')}</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              We deploy state-of-the-art sensors and monitoring equipment that measure air pollutants
-              with precision and accuracy. Our technology captures data every minute, ensuring you have
-              access to the most current information about air quality in your area.
+              {t('aboutPage.technologyText1')}
             </p>
             <p className="text-gray-700 leading-relaxed">
-              All data is processed through advanced algorithms and validated by environmental scientists
-              to ensure reliability. Our commitment to accuracy and transparency makes us a trusted
-              source for air quality information.
+              {t('aboutPage.technologyText2')}
             </p>
           </Card>
         </div>
 
         {/* Team Section */}
         <Card className="p-6 md:p-8">
-          <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Our Team</h2>
+          <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">{t('aboutPage.teamTitle')}</h2>
           <p className="text-gray-700 leading-relaxed mb-4">
-            Our team consists of environmental scientists, data engineers, public health experts, and
-            community advocates who are passionate about environmental justice and public health.
+            {t('aboutPage.teamText1')}
           </p>
           <p className="text-gray-700 leading-relaxed">
-            Together, we work to ensure that every New Yorker has access to the information they need
-            to protect themselves and their families from air pollution.
+            {t('aboutPage.teamText2')}
           </p>
         </Card>
       </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Tooltip, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -12,6 +12,17 @@ function getColor(value){
   if (value<300) return '#faa022'; // Desert - Moderate-hight
   if (value< 400) return '#f04f23';// Orange - Hight
   return '#8B0000'; // Dark red - Very high
+}
+
+function MapController({ center, zoom }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!center || center.length !== 2) return;
+    map.setView(center, zoom);
+  }, [center, zoom, map]);
+
+  return null;
 }
 
 
@@ -44,8 +55,7 @@ const createPoint = (color, value) => {
   });
 };
 
-export function PollutionMap({ points = [], selected = 'co2'}) {
-  const center = [49.444, 32.06];
+export function PollutionMap({ points = [], selected = 'co2', center = [49.444, 32.06], zoom = 13 }) {
   console.log(points);
   
   // color of the marker depends on max AQI of the point.
@@ -56,10 +66,11 @@ export function PollutionMap({ points = [], selected = 'co2'}) {
     <div className="size-full relative overflow-hidden">
       <MapContainer 
         center={center} 
-        zoom={13} 
+        zoom={zoom} 
         className="size-full z-0"
         zoomControl={false} 
       >
+        <MapController center={center} zoom={zoom} />
         {/* map style (CartoDB Positron) */}
         <TileLayer
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
