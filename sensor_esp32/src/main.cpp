@@ -47,6 +47,8 @@ void loop() {
   // // ------------------------------
   prvLat = 100;
   prvLng = 100;
+  lat = 49;
+  lng = 32;
   // Sensor data managing 
   if (gps->GPS.distanceBetween(lat, lng, prvLat, prvLng)>=MIN_DIST){
     
@@ -78,9 +80,12 @@ void loop() {
       wifi->setupConnection(WIFI_SSID, WIFI_PASSWORD);
       mqtt->reconnect();
     }
-    delay(1000);
   }
-
+  else{
+    Serial.println("GPS: Too close to last sent point");
+  }
+  delay(1000);
+  
 
 
 }

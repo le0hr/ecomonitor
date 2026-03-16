@@ -10,7 +10,7 @@ export function AboutPage() {
     { icon: Users, label: t('aboutPage.stats.activeMonitors'), value: '1' },
     { icon: Target, label: t('aboutPage.stats.dataPoints'), value: '0' },
     { icon: Award, label: t('aboutPage.stats.yearsOperating'), value: '0' },
-    { icon: TrendingUp, label: t('aboutPage.stats.accuracyRate'), value: 'unmeasured'},
+    // { icon: TrendingUp, label: t('aboutPage.stats.accuracyRate'), value: 'unmeasured'},
   ];
 
   return (
@@ -34,9 +34,12 @@ export function AboutPage() {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
+        <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-8 md:mb-12">
           {stats.map((stat) => (
-            <Card key={stat.label} className="p-6 text-center">
+            <Card 
+              key={stat.label} 
+              className="p-6 text-center flex flex-col items-center justify-center min-w-[200px] flex-1 max-w-[350px]"
+            >
               <div className="flex justify-center mb-3">
                 <div className="size-12 rounded-full bg-blue-100 flex items-center justify-center">
                   <stat.icon className="size-6 text-blue-600" />

@@ -29,10 +29,10 @@ void AirSensor::readData(float* co, float* alcohol , float* co2, float* toluene,
         SPI.beginTransaction(spiSettings);
         uint16_t raw = adc.read(MCP3208::Channel::SINGLE_0);
         SPI.endTransaction();
-        uint16_t mv = adc.toAnalog(raw);
-        Serial.println(raw);
         
         MQ3->externalADCUpdate(raw);
+        
+        MQ3->update();
         
         MQ3->setA(605.18); MQ3->setB(-3.937);   // CO detection
         *co = max(MQ3->readSensor(false, 0), *co);
