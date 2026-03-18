@@ -5,10 +5,10 @@ import { Textarea } from '../components/ui/textarea';
 import { CheckCircle2, Users, Heart, Zap } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import axios from 'axios'
 export function JoinPage() {
   const { t } = useTranslation();
-  const [formData, setFormData] = useState({name: '',email: '',phone: '',interest: '',});
+  const [formData, setFormData] = useState({name: '',email: '',phone_number: '',message: '',});
 
   const benefits = [
     {
@@ -28,12 +28,24 @@ export function JoinPage() {
     },
   ];
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-    alert('Thank you for your interest! We will contact you soon.');
-    setFormData({ name: '', email: '', phone: '', interest: '' });
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault(); // 1. Зупиняємо перезавантаження сторінки
+
+  try {
+    // 2. Переконайтеся, що URL '/api/join' збігається з маршрутом у вашому FastAPI
+    console.log(formData)
+    const response = await axios.post('/api/join', formData);
+    console.log("Success:", response.data);
+    alert(t('joinPage.form.successMessage') || "Дякуємо за заявку!");
+    
+    // 3. Очищаємо форму після успіху
+    setFormData({ name: '', email: '', phone_number: '', message: '' });
+    
+  } catch (error) {
+    console.error("Failed to send data:", error);
+    alert("Помилка при відправці. Спробуйте пізніше.");
+  }
+};
 
   return (
     <div className="flex-1 overflow-auto bg-gray-50">
@@ -144,8 +156,8 @@ export function JoinPage() {
               <Input
                 id="phone"
                 type="tel"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                value={formData.phone_number}
+                onChange={(e) => setFormData({ ...formData, phone_number: e.target.value })}
                 placeholder="(555) 123-4567"
               />
             </div>
@@ -155,13 +167,13 @@ export function JoinPage() {
               </label>
               <Textarea
                 id="interest"
-                value={formData.interest}
-                onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 placeholder="Tell us what you're most interested in helping with..."
                 rows={4}
               />
             </div>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-md transition-all">
               {t('joinPage.form.submit')}
             </Button>
           </form>

@@ -23,7 +23,7 @@ applicants = Table(
     metadata_obj,
     Column("id", Integer, primary_key=True),
     Column("name", String),
-    Column("mail", String),
+    Column("email", String),
     Column("phone_number", String),
     Column("message", String)
 )

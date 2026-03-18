@@ -1,7 +1,9 @@
 from aiosmtplib import send
 from config import settings
 from email.message import EmailMessage
-async def send_mail_to_applicant(data ):
+import logging
+async def send_mail_to_applicant(data):
+    logging.info(data)
     msg = EmailMessage()
     msg["From"] = settings.email_from
     msg["To"] = data.email

@@ -23,7 +23,7 @@ async def get_data_from_db():
 async def post_application(data: JoinRequest):
     logging.info("POST /join")
     insert_applicants(data)
-    send_mail_to_applicant(data)
-    send_mail_to_host(data)
+    logging.info(await send_mail_to_applicant(data))
+    logging.info(await send_mail_to_host(data))
 
 

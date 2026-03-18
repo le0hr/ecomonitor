@@ -18,6 +18,7 @@ def fetch_sensor_readings(limit=100):
 
 
 def insert_applicants(data):
+    data = data.model_dump()
     stmt = insert(applicants).values(data)
     with engine.begin() as conn:
         conn.execute(stmt)
