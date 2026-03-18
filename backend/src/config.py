@@ -12,6 +12,12 @@ class Settings(BaseSettings):
     db_user: str
     db_password: str
 
+    email_from: str
+    email_host: str
+    email_port: int
+    email_user: str
+    email_password: str
+
     model_config = SettingsConfigDict(
         env_file='/app/.env', 
         env_file_encoding='utf-8',
