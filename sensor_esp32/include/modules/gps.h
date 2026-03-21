@@ -11,7 +11,8 @@ public:
     uint32_t GPSBaud;
     int RXPin, TXPin, start;
     String data;
-    void getPosition(double* lng,double* lat);
+    bool getPosition(double* lng,double* lat);
+    void update();
     Gps();
     ~Gps();
 };
