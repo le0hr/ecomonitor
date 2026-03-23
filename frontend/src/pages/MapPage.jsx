@@ -23,7 +23,7 @@ const pollutionTypes = [
 
 export function MapPage() {
   const { t } = useTranslation();
-  const [selectedType, setSelectedType] = useState('co2');
+  const [selectedType, setSelectedType] = useState('alcohol');
   const [hoveredLocation, setHoveredLocation] = useState(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [pointOnMap, setPoints] = useState([]);
@@ -31,63 +31,84 @@ export function MapPage() {
   const [searchError, setSearchError] = useState('');
   const [searchLoading, setSearchLoading] = useState(false);
   const [mapCenter, setMapCenter] = useState([49.444, 32.06]);
-  const [mapZoom, setMapZoom] = useState(13);
+  const [mapZoom, setMapZoom] = useState(12);
+  const [dotsCount, setDotsCount] = useState(0);
+
 
   const currentType = pollutionTypes.find((t) => t.value === selectedType);
   const currentTypeLabel = currentType ? t(currentType.labelKey) : '';
   const Icon = currentType?.icon;
   
-  const average = 0;
-  const max = 0;
-  const min = 0;
-
+  
   useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await axios.get('/api/data');
-          console.log(response.data);
-          setPoints(response.data);
-          console.log(response.data);
-        } catch (error) {
-          console.error("Failed to fetch", error);
-        }
-      };
-      fetchData();
-    }, []);
-//  raw search bar implementation 
-  // const handleSearch = async (event) => {
-  //   event.preventDefault();
-  //   if (!searchQuery.trim()) return;
+    const fetchData = async () => {
+      try {
+        let response = await axios.get('/api/data');
+        console.log(response.data);
+        setPoints(response.data);
+        
+        response = await axios.get('/api/data/counts');
+        console.log(response.data);
+        setDotsCount(response.data);
 
-  //   setSearchLoading(true);
-  //   setSearchError('');
+      } catch (error) {
+        console.error("Failed to fetch", error);
+      }
+    };
+    fetchData();
+  }, []);
+  
+  const stats = (() => {
+    if (!Array.isArray(pointOnMap) || pointOnMap.length === 0) {
+      return { avg: 0, min: 0, max: 0 };
+    }
 
-  //   try {
-  //     const params = new URLSearchParams({
-  //       q: searchQuery,
-  //       format: 'json',
-  //       limit: '1',
-  //       api_key: 'API_KEY'
-  //     });
+    let sum = 0;
+    let min = Infinity;
+    let max = -Infinity;
+    let count = 0;
 
-  //     const response = await axios.get(`https://geocode.maps.co/search?${params.toString()}`);
-  //     const result = response.data?.[0];
+    for (const point of pointOnMap) {
+      const value = point[selectedType];
 
-  //     if (!result) {
-  //       setSearchError('Location not found');
-  //       return;
-  //     }
+      if (value == null) continue;
 
-  //     setMapCenter([parseFloat(result.lat), parseFloat(result.lon)]);
-  //     setMapZoom(14);
-  //   } catch (err) {
-  //     console.error('Search failed', err);
-  //     setSearchError('Search failed. Please try again.');
-  //   } finally {
-  //     setSearchLoading(false);
-  //   }
-  // };
+      sum += value;
+      if (value < min) min = value;
+      if (value > max) max = value;
+      count++;
+    }
 
+    if (count === 0) {
+      return { avg: 0, min: 0, max: 0 };
+    }
+
+    return {
+      avg: Math.round(sum / count),
+      min,
+      max,
+    };
+  })();
+
+  const latestTime = (() => {
+  if (!Array.isArray(pointOnMap) || pointOnMap.length === 0) return null;
+
+  let maxTime = 0;
+
+  for (const point of pointOnMap) {
+    if (!point.time) continue;
+
+    const t = new Date(point.time).getTime();
+    if (t > maxTime) maxTime = t;
+  }
+
+  return maxTime ? new Date(maxTime) : null;
+})();
+
+  const avg = stats.avg;
+  const min = stats.min;
+  const max = stats.max;
+  
   return (
     <div className="h-full  flex-1 flex flex-col bg-gray-100">
       {/* Controls Bar */}
@@ -107,23 +128,7 @@ export function MapPage() {
                 ))}
               </SelectContent>
             </Select>
-       {/*raw search bar implementation  */}
-{/*             
-            <form onSubmit={handleSearch} className="flex items-center gap-2 flex-1 min-w-[240px] md:min-w-[340px]">
-              <Input
-                value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder="Search location..."
-                className="flex-1 bg-white"
-              />
-              <Button type="submit" variant="outline" size="sm" className="whitespace-nowrap" disabled={searchLoading}>
-                {searchLoading ? 'Searching…' : 'Search'}
-              </Button>
-            </form>
-
-            {searchError ? (
-              <div className="text-xs text-rose-600">{searchError}</div>
-            ) : null} */}
+       
           </div> 
           
           {/* Mobile Info Toggle */}
@@ -152,7 +157,7 @@ export function MapPage() {
         </div>
         
         {/* Desktop Overlay Cards - Right Side */}
-      <div className="hidden md:block absolute top-2 right-2 space-y-2 w-52 z-[1000] scale-[0.85] origin-top-right transition-all">
+      <div className="hidden md:block absolute top-2 right-2 space-y-2 w-52 z-[1000]  origin-top-right transition-all">
         <Card className="p-2.5 bg-white/95 backdrop-blur shadow-sm border-gray-100">
           <div className="flex items-center gap-2"> 
             <div className="size-8 rounded-md bg-blue-100 flex items-center justify-center shrink-0">
@@ -169,7 +174,7 @@ export function MapPage() {
         
         <PollutionStats
           pollutionType={currentTypeLabel}
-          average={average}
+          average={avg}
           max={max}
           min={min}
           unit={currentType.unit}
@@ -196,7 +201,7 @@ export function MapPage() {
             
             <PollutionStats
               pollutionType={currentTypeLabel}
-              average={average}
+              average={avg}
               max={max}
               min={min}
               unit={currentType.unit}
@@ -211,12 +216,12 @@ export function MapPage() {
         <div className="hidden md:block absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur border-t px-6 py-3 z-[1000]">
           <div className="max-w-7xl mx-auto flex items-center justify-between text-sm">
             <div className="text-gray-600">
-              {t('mapPage.last_updated')} {new Date().toLocaleString()}
+              {t('mapPage.last_updated')} {latestTime ? latestTime.toLocaleString() : "—"}
             </div>
             <div className="flex items-center gap-6">
               <div>
                 <span className="text-gray-600">{t('mapPage.monitoring_stations')} </span>
-                <span className="font-medium">{0}</span>
+                <span className="font-medium">{dotsCount}</span>
               </div>
               <div>
                 <span className="text-gray-600">{t('mapPage.coverage_area')} </span>

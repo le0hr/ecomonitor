@@ -69,7 +69,7 @@ export function PollutionMap({ points = [], selected = 'co2', center = [49.444, 
         zoom={zoom} 
         className="size-full z-0"
         zoomControl={false} 
-      >
+      >        
         <MapController center={center} zoom={zoom} />
         {/* map style (CartoDB Positron) */}
         <TileLayer

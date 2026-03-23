@@ -29,16 +29,16 @@ export function JoinPage() {
   ];
 
 const handleSubmit = async (e) => {
-  e.preventDefault(); // 1. Зупиняємо перезавантаження сторінки
+  e.preventDefault(); 
 
   try {
-    // 2. Переконайтеся, що URL '/api/join' збігається з маршрутом у вашому FastAPI
+
     console.log(formData)
     const response = await axios.post('/api/join', formData);
     console.log("Success:", response.data);
     alert(t('joinPage.form.successMessage') || "Дякуємо за заявку!");
     
-    // 3. Очищаємо форму після успіху
+
     setFormData({ name: '', email: '', phone_number: '', message: '' });
     
   } catch (error) {

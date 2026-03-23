@@ -9,7 +9,6 @@ engine = create_engine(
 
 def create_tables():
     engine.echo = False
-    metadata_obj.drop_all(engine)
     metadata_obj.create_all(engine)
     engine.echo = True
 

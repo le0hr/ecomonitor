@@ -1,17 +1,45 @@
 import { Card } from '../components/ui/card';
 import { Target, Users, Award, Github, Mail, Instagram } from 'lucide-react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 
 export function AboutPage() {
   const { t } = useTranslation();
+  const [dotsCount, setDotsCount] = useState(0);
+  const [volunteerCount, setVolunteerCount] = useState(0);
+  
   // TODO: 
   // add statistic fetching
+
+  useEffect(() => {
+      const fetchData = async () => {
+        try {
+          let response = await axios.get('/api/join/counts');
+          console.log(response.data);
+          setVolunteerCount(response.data);
+
+          response = await axios.get('/api/data/counts');
+          console.log(response.data);
+          setDotsCount(response.data);
+
+        } catch (error) {
+          console.error("Failed to fetch", error);
+        }
+      };
+      fetchData();
+    }, []);
+  
   const stats = [
     { icon: Users, label: t('aboutPage.stats.activeMonitors'), value: '1' },
-    { icon: Target, label: t('aboutPage.stats.dataPoints'), value: '0' },
-    { icon: Award, label: t('aboutPage.stats.yearsOperating'), value: '0' },
+    { icon: Target, label: t('aboutPage.stats.dataPoints'), value: dotsCount },
+    { icon: Award, label: t('aboutPage.stats.yearsOperating'), value: volunteerCount },
     // { icon: TrendingUp, label: t('aboutPage.stats.accuracyRate'), value: 'unmeasured'},
   ];
+
+
+
 
   return (
     <div className="flex-1 overflow-auto bg-gray-50">

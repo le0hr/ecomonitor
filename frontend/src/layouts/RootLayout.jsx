@@ -6,7 +6,7 @@ export function RootLayout() {
     <>
       <div className="h-screen flex flex-col ">
         <Navbar /> {/* Висота, наприклад, 64px */}
-        <main className="flex-1 relative ">
+        <main className="flex-1 relative overflow-auto ">
           <Outlet /> {/* Тепер займає все, що залишилося від екрана */}
         </main>
       </div>
