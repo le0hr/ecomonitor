@@ -83,7 +83,7 @@ export function PollutionMap({ points = [], selected = 'co2', center = [49.444, 
           return (
             <Marker
               key={point.id}
-              position={[point.geom.coordinates[0], point.geom.coordinates[1]]}               icon={createPoint(color,point[selected] )}
+              position={[point.geom.coordinates[1], point.geom.coordinates[0]]}               icon={createPoint(color,point[selected] )}
             >
 {/* TODO: Make a normal tooltip */}
 
