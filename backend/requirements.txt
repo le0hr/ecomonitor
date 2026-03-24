@@ -4,6 +4,8 @@ annotated-types==0.7.0
 anyio==4.12.1
 click==8.3.1
 colorama==0.4.6
+dnspython==2.8.0
+email-validator==2.3.0
 fastapi==0.128.2
 fastapi-mqtt==2.2.0
 GeoAlchemy2==0.18.4
@@ -13,7 +15,7 @@ h11==0.16.0
 httptools==0.7.1
 idna==3.11
 packaging==26.0
-psycopg-binary==3.3.3
+psycopg2-binary==2.9.11
 pydantic==2.12.5
 pydantic-settings==2.4.0
 pydantic_core==2.41.5

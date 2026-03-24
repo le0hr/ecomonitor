@@ -1,8 +1,8 @@
-from sqlalchemy import insert, select, func
+from sqlalchemy import insert, select, update ,func
 from .connection import engine
-from .models import sensor_readings, applicants, update
+from .models import sensor_readings, applicants
 
-def update_sensor_readings(data):
+def upsert_sensor_readings(data):
     point = func.ST_GeogFromText(f"POINT({data['lng']} {data['lat']})")
 
     find_stmt = (

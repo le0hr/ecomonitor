@@ -1,4 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS postgis;
+
 CREATE TABLE sensor_readings (
     id SERIAL PRIMARY KEY,
     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -10,11 +11,6 @@ CREATE TABLE sensor_readings (
     acetone FLOAT,
     max FLOAT,
     lat FLOAT,
-    lng FLOAT
+    lng FLOAT,
+    geom geography(Point, 4326) NOT NULL
 );
-
-
-INSERT INTO sensor_readings (time, co, alcohol, co2, toluene, nh3, acetone,max, lat, lng)
-VALUES (NOW(), 0.45, 0.12, 0.05, 0.01, 0.002, 0.001, 100, 49.444, 32.059);
-INSERT INTO sensor_readings (time, co, alcohol, co2, toluene, nh3, acetone,max, lat, lng)
-VALUES (NOW(), 0.45, 0.12, 0.05, 0.01, 0.002, 0.001, 100, 49.444, 30.059);
