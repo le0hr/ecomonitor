@@ -14,8 +14,6 @@ sensor_readings =  Table(
     Column("toluene",Integer ),
     Column("nh3",Integer ),
     Column("acetone",Integer ),
-    Column("lat",Float ),
-    Column("lng",Float ),
     Column("geom", Geography(geometry_type="POINT", srid=4326)),
 )
 

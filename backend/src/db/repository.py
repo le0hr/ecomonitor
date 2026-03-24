@@ -1,7 +1,7 @@
 from sqlalchemy import insert, select, update ,func
 from .connection import engine
 from .models import sensor_readings, applicants
-
+import json
 def upsert_sensor_readings(data):
     point = func.ST_GeogFromText(f"POINT({data['lng']} {data['lat']})")
 
@@ -25,11 +25,33 @@ def upsert_sensor_readings(data):
         conn.execute(stmt)
 
 def fetch_sensor_readings():
-    stmt = select(sensor_readings)
+    stmt = select(
+    sensor_readings.c.id,
+    sensor_readings.c.time,
+    sensor_readings.c.co,
+    sensor_readings.c.alcohol,
+    sensor_readings.c.co2,
+    sensor_readings.c.toluene,
+    sensor_readings.c.nh3,
+    sensor_readings.c.acetone,
+    func.ST_AsGeoJSON(sensor_readings.c.geom).label("geom")
+)
+
     with engine.begin() as conn:
         result = conn.execute(stmt)
-        rows = [dict(row._mapping) for row in result.fetchall()]
+
+        rows = []
+
+        for row in result:
+            row_dict = dict(row._mapping)
+
+            if row_dict["geom"]:
+                row_dict["geom"] = json.loads(row_dict["geom"])
+
+            rows.append(row_dict)
+
     return rows
+
 
 def fetch_dots_number():
     stmt = select(func.count()).select_from(sensor_readings)
