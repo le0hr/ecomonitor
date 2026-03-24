@@ -10,7 +10,5 @@ CREATE TABLE sensor_readings (
     nh3 FLOAT,
     acetone FLOAT,
     max FLOAT,
-    lat FLOAT,
-    lng FLOAT,
     geom geography(Point, 4326) NOT NULL
 );

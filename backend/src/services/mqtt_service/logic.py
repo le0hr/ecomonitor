@@ -18,8 +18,6 @@ def process_mqtt_payload(payload_str: str):
         "toluene": data["toluene"],
         "nh3": data["nh3"],
         "acetone": data["acetone"],
-        "lat": data.get("lat"),
-        "lng": data.get("lng"),
         "geom": func.ST_GeogFromText(f"POINT({data['lng']} {data['lat']})")
     }
 
