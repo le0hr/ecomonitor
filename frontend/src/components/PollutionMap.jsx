@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Tooltip, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker, Tooltip, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -55,7 +55,7 @@ const createPoint = (color, value) => {
   });
 };
 
-export function PollutionMap({ points = [], selected = 'co2', center = [49.444, 32.06], zoom = 13 }) {
+export function PollutionMap({ points = [], selected = 'co2', center = [49.444, 32.06], zoom = 13, onPointSelect }) {
   console.log(points);
   
   // color of the marker depends on max AQI of the point.
@@ -81,10 +81,19 @@ export function PollutionMap({ points = [], selected = 'co2', center = [49.444, 
           const color = getColor(point[selected]);
           
           return (
-            <Marker
-              key={point.id}
-              position={[point.geom.coordinates[1], point.geom.coordinates[0]]}               icon={createPoint(color,point[selected] )}
-            >
+              <CircleMarker
+              center={[point.geom.coordinates[1], point.geom.coordinates[0]]}
+              radius={12}
+              pathOptions={{
+                color: '#ffffff',     // border
+                weight: 3,
+                fillColor: getColor(color),
+                fillOpacity: 1,
+              }}
+              eventHandlers={{
+                click: () => onPointSelect?.(point),
+              }}>
+
 {/* TODO: Make a normal tooltip */}
 
               {/*Tooltip window */}
@@ -107,7 +116,7 @@ export function PollutionMap({ points = [], selected = 'co2', center = [49.444, 
                   {/* </div> */}
                 {/* </div> */}
               {/* </Tooltip> */}
-            </Marker>
+          </CircleMarker>
           );
         })}
       </MapContainer>

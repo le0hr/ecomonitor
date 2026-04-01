@@ -12,3 +12,21 @@ CREATE TABLE sensor_readings (
     max FLOAT,
     geom geography(Point, 4326) NOT NULL
 );
+
+INSERT INTO sensor_readings (co, alcohol, co2, toluene, nh3, acetone, max, geom)
+SELECT
+  random(), 
+  random(), 
+  300 + random()*400, 
+  random(), 
+  random(), 
+  random(), 
+  random()*400,
+  ST_SetSRID(
+    ST_MakePoint(
+      32.03 + random()*0.1,
+      49.42 + random()*0.05
+    ), 
+    4326
+  )::geography
+FROM generate_series(1, 100);

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PollutionLegend } from '../components/PollutionLegend';
 import { PollutionStats } from '../components/PollutionStats';
+import { PollutionData } from '../components/PollutionData';
+
 import { PollutionMap } from '../components/PollutionMap';
 import axios from 'axios';
 
@@ -34,6 +36,7 @@ export function MapPage() {
   const [mapZoom, setMapZoom] = useState(12);
   const [dotsCount, setDotsCount] = useState(0);
 
+  const [selectedPoint, setSelectedPoint] = useState('')
 
   const currentType = pollutionTypes.find((t) => t.value === selectedType);
   const currentTypeLabel = currentType ? t(currentType.labelKey) : '';
@@ -153,35 +156,36 @@ export function MapPage() {
         {/* Map area with gradient background */}
         <div className="size-full bg-gradient-to-br from-slate-100 to-slate-200 relative">
           {/* Pollution markers */}
-          <PollutionMap points={pointOnMap} selected={selectedType} center={mapCenter} zoom={mapZoom} />
+          <PollutionMap points={pointOnMap} selected={selectedType} center={mapCenter} zoom={mapZoom} onPointSelect={setSelectedPoint} />
         </div>
-        
+
+
+        {/* Desktop Overlay Cards - Left Side */}
+        <div className="hidden md:block absolute top-4 left-4 z-[1000] w-[420px] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-140px)] overflow-y-auto">
+          {selectedPoint && (
+            <PollutionData
+              point={selectedPoint}
+              onClose={() => setSelectedPoint(null)}
+            />
+          )}
+          
+        </div>
+
+
+
         {/* Desktop Overlay Cards - Right Side */}
-      <div className="hidden md:block absolute top-2 right-2 space-y-2 w-52 z-[1000]  origin-top-right transition-all">
-        <Card className="p-2.5 bg-white/95 backdrop-blur shadow-sm border-gray-100">
-          <div className="flex items-center gap-2"> 
-            <div className="size-8 rounded-md bg-blue-100 flex items-center justify-center shrink-0">
-              <Icon className="size-4 text-blue-600" />
-            </div>
-            <div className="min-w-0">
-              <div className="text-[10px] text-gray-500 uppercase leading-none mb-0.5">{t('mapPage.type')}</div>
-              <div className="font-bold text-xs truncate uppercase tracking-tight">
-                {currentTypeLabel}
-              </div>
-            </div>
-          </div>
-        </Card>
-        
-        <PollutionStats
-          pollutionType={currentTypeLabel}
-          average={avg}
-          max={max}
-          min={min}
-          unit={currentType.unit}
-        />
-        
-        <PollutionLegend pollutionType={currentTypeLabel} />
-      </div>
+        <div className="hidden md:block absolute top-4 right-4 space-y-3 w-[300px]">
+          
+          <PollutionStats
+            pollutionType={currentTypeLabel}
+            average={avg}
+            max={max}
+            min={min}
+            unit={currentType.unit}
+          />
+          
+          <PollutionLegend pollutionType={currentTypeLabel} />
+        </div>
 
       {/* Mobile Info Panel */}
       {isInfoOpen && (
